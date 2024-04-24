@@ -4,7 +4,7 @@ schema = new mongoose.Schema(
     {
         id:{
             type: Int8Array,
-            unique: True
+            unique: true
         },
         email:{
             type: String,
