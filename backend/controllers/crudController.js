@@ -1,5 +1,6 @@
 // create, delete, update, read
 
+const { response } = require("express");
 const Crud = require("../model/crudModel")
 
 //Display
@@ -69,11 +70,27 @@ const crud_update = (req,res) => {
         })
 }
 
+const crud_test = async (req,res) => {
+    const id = req.body.id
+    const email = req.body.email
+    const title = req.body.title
+    const description = req.body.description
+
+    const response = await Crud.create({
+        "id":id,
+        "email":email,
+        "title":title,
+        "description":description
+    })
+    res.send(response)
+}
+
 module.exports = {
     crud_create_post,
     crud_delete,
     crud_details,
     crud_update,
-    crud_disp
+    crud_disp,
+    crud_test
 }
 

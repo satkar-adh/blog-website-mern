@@ -1,27 +1,27 @@
-const express = require('express');
-const cors = require('cors');
-const connection = require("./db")
-const routes = require("./routes/crudRoutes")
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const connection = require("./db");
+const crudRoutes = require("./routes/crudRoutes");
 
-const app = express();
 const PORT = 3000;
+const app = express();
 
-//connect to database
-connection()
+// database connection
+connection();
 
-//middleware
-app.use(express.urlencoded({extended : true}))
-app.use(express.json)
-app.use(cors)
-app.use((req,res,next) => {
-  res.locals.path = req.path;
-  next()
+// middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
+app.use((req, res, next) => {
+	res.locals.path = req.path;
+	next();
 });
 
-//routes
-app.use("/api/crud",routes)
+// routes
+app.use("/api/cruds", crudRoutes);
+//app.use("/api/auth", authRoute);
 
-//listen
-app.listen(PORT, ()=>{
-  console.log(`Server listening to port ${PORT}`)
-})
+// listening on port
+app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));

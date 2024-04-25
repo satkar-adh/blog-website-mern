@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 schema = new mongoose.Schema(
     {
         id:{
-            type: Int8Array,
+            type: Number,
             unique: true
         },
         email:{
