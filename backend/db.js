@@ -1,10 +1,10 @@
 const mongoose = require("mongoose")
 
 async function connection(){
-    const MONGO_URL = "mongodb+srv://satkar147:BHT33ZhdyKZJ59IL@crud.gwj3eqt.mongodb.net/"
+    const MONGO_URL = "mongodb+srv://satkar147:BHT33ZhdyKZJ59IL@crud.gwj3eqt.mongodb.net/crud_db"
     await mongoose.connect(MONGO_URL)
-                    // .then((result) => console.log("Connection successful"))
-                    // .catch((error) => console.log("Couldn't connect"))
+                    .then((result) => console.log("Connection successful"))
+                    .catch((error) => console.log("Couldn't connect"))
 }
 
 // module.exports = () => {

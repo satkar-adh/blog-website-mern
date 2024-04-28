@@ -2,25 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connection = require("./db");
-const crudRoutes = require("./routes/crudRoutes");
-
+const crudController = require("./controllers/crudController")
 const PORT = 3000;
 const app = express();
 
+// middleware
+// app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
+app.use(express.json());
 // database connection
 connection();
 
-// middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
-app.use((req, res, next) => {
-	res.locals.path = req.path;
-	next();
-});
 
 // routes
-app.use("/api/cruds", crudRoutes);
+app.get("/crud", crudController.crud_disp);
+app.post("/crud", crudController.crud_create_post);
+app.post("/crud/test", crudController.crud_test);
+app.get("/crud/:id", crudController.crud_details);
+app.patch("/crud/:id", crudController.crud_update);
+app.delete("/crud/:id", crudController.crud_delete);
 //app.use("/api/auth", authRoute);
 
 // listening on port

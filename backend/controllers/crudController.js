@@ -1,26 +1,20 @@
 // create, delete, update, read
 
-const { response } = require("express");
 const Crud = require("../model/crudModel")
 
 //Display
-const crud_disp = (req,res) => {
-    Crud.find(function (err,cruds){
-        if(err){
-            res.status(500).send("Internal Server Error");
-        }
-        else{
-            res.json(cruds);
-        }
-    })
+const crud_disp = async (req,res) => {
+    const data = await Crud.find()
+    res.json(data);
 }
 
 //Create
-const crud_create_post = (req,res) => {
-    let crud = new Crud(req.body)
+const crud_create_post = async (req,res) => {
+    const {email,title,description} = req.body
+    let crud = await new Crud({email,title,description})
     crud.save()
-        .then((crud) => {
-            res.send(crud)
+        .then((data) => {
+            res.send(data)
         })
         .catch(function(err){
             res.status(422).send("Crud add failed");
@@ -28,35 +22,39 @@ const crud_create_post = (req,res) => {
 }
 
 //Details by ID
-const crud_details = (req,res) => {
-    Crud.findById(req.params.id, function(err,crud){
-        if (!crud){
-            res.status(404).send("No info found")
-        }
-        else{
-            res.json(crud)
-        }
-    })
+const crud_details = async (req,res) => {
+    const crud = await Crud.findById(req.params.id)
+
+    res.json(crud)
 }
 
 //Delete
 
-const crud_delete = (req,res) => {
-    Crud.findById(req.params.id, function(err, crud){
-        if (!crud){
-            res.status(404).send("No info found")
-        }
-        else{
-            Crud.findByIdAndRemove(req.params.id)
-                .then(function(){
-                    res.status(202).json("Crud Deleted")
-                })
-                .catch(function(){
-                    res.status(400).send("Crud delete failed")
-                })
-        }
-    });
-}
+const crud_delete = async (req, res) => {
+    try {
+        // Get the id from the URL parameters
+        const crudId = req.params.id;
+
+        // Delete the record
+        await Crud.deleteOne({ id: crudId })
+                                 .then(() => console.log("SUCCESSFULLY DELETED"))
+                                 .catch((err) => console.log(error));
+
+        // // Check if the record was found and deleted
+        // if (result.deletedCount === 0) {
+        //     return res.status(404).json({ error: "Record not found" });
+        // }
+
+        // Respond with a success message and the ID of the deleted record
+        res.json({ success: "Record deleted", deletedId: crudId });
+    } catch (error) {
+        // Handle any errors that occur during the delete operation
+        console.error("Error deleting record:", error);
+        res.status(500).json({ error: "Failed to delete record" });
+    }
+};
+
+  
 
 //Update
 
