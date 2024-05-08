@@ -22,6 +22,7 @@ app.post("/crud/test", crudController.crud_test);
 app.get("/crud/:id", crudController.crud_details);
 app.patch("/crud/:id", crudController.crud_update);
 app.delete("/crud/:id", crudController.crud_delete);
+app.get("/crud/search/:id",crudController.crud_search)
 //app.use("/api/auth", authRoute);
 
 // listening on port

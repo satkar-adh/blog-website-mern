@@ -83,12 +83,26 @@ const crud_test = async (req,res) => {
     res.send(response)
 }
 
+const crud_search = async (req,res) => {
+    try{
+        let to_find = req.params.id
+        const query = { title: { $regex: `${to_find}.+`, $options: 'i' } };
+        const result = await Crud.find(query)
+        res.json(result)
+    }
+    catch(err){
+        console.log("ERROR")
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 module.exports = {
     crud_create_post,
     crud_delete,
     crud_details,
     crud_update,
     crud_disp,
-    crud_test
+    crud_test,
+    crud_search
 }
 
